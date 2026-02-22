@@ -1,0 +1,771 @@
+@import "tailwindcss";
+
+/* ========== LIGHT MODE — Warm Cinematic (Golden Hour) ========== */
+:root {
+  --bg: #f7f3ed;
+  --bg-card: #f0ebe3;
+  --bg-paper: #faf8f4;
+  --border: #e5dfd6;
+  --headline: #2c2420;
+  --headline-2: #3d3632;
+  --headline-3: #4a4440;
+  --body: #4a4541;
+  --body-soft: #6b6560;
+  --muted: #8a8580;
+  --accent: #b87333;
+  --accent-hover: #9a6129;
+  --accent-glow: rgba(184, 115, 51, 0.25);
+  --shadow-warm: 0 4px 20px rgba(44, 36, 32, 0.06);
+  --shadow-soft: 0 2px 12px rgba(44, 36, 32, 0.04);
+  --btn-text: #faf8f4;
+  --error: #8b5a2b;
+  --success: #5a7c59;
+  --radius: 14px;
+  --radius-lg: 18px;
+  --font-heading: var(--font-yatra), ui-serif, serif;
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --grain-opacity: 0.035;
+  --hero-glow: radial-gradient(ellipse 120% 80% at 50% -20%, rgba(184, 115, 51, 0.036), transparent 60%);
+  --modal-overlay: rgba(44, 36, 32, 0.35);
+  /* Calendar: saved entry date (burnt amber) */
+  --calendar-entry-bg: #c17d38;
+  --calendar-entry-text: #faf8f4;
+  --calendar-entry-border: #a0662a;
+  --calendar-entry-shadow: 0 2px 10px rgba(184, 115, 51, 0.3);
+  --calendar-entry-glow: 0 0 12px rgba(184, 115, 51, 0.2);
+  --tooltip-bg: #faf8f4;
+  --tooltip-shadow: 0 4px 16px rgba(44, 36, 32, 0.08);
+  --scrollbar-track: #e5dfd6;
+  --scrollbar-thumb: #c4b8a8;
+  --scrollbar-thumb-hover: #b87333;
+}
+
+/* ========== DARK MODE — Warm Night ========== */
+.dark {
+  --bg: #1c1917;
+  --bg-card: #292524;
+  --bg-paper: #2f2b28;
+  --border: #3d3835;
+  --headline: #f5f0e8;
+  --headline-2: #e8e2d9;
+  --headline-3: #d4cec5;
+  --body: #a8a29e;
+  --body-soft: #9a948e;
+  --muted: #78716c;
+  --accent: #d4a054;
+  --accent-hover: #c4923e;
+  --accent-glow: rgba(212, 160, 84, 0.35);
+  --shadow-warm: 0 4px 24px rgba(0, 0, 0, 0.25);
+  --shadow-soft: 0 2px 16px rgba(0, 0, 0, 0.2);
+  --btn-text: #faf8f4;
+  --error: #c4a574;
+  --success: #86a885;
+  --grain-opacity: 0.04;
+  --hero-glow: radial-gradient(ellipse 120% 80% at 50% -20%, rgba(212, 160, 84, 0.048), transparent 55%);
+  --modal-overlay: rgba(0, 0, 0, 0.6);
+  /* Calendar: saved entry date (deep amber) */
+  --calendar-entry-bg: #9a6630;
+  --calendar-entry-text: #f5f0e8;
+  --calendar-entry-border: #b87333;
+  --calendar-entry-glow: 0 0 14px rgba(212, 160, 84, 0.4);
+  --tooltip-bg: #2f2b28;
+  --tooltip-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  --scrollbar-track: #1c1917;
+  --scrollbar-thumb: #57534e;
+  --scrollbar-thumb-hover: #d4a054;
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--body);
+  --font-sans: var(--font-dm-sans);
+}
+
+/* ========== Grain (light 3–5%, dark 4–6%) ========== */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ========== Animations ========== */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes slide-up-soft {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tooltip-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.animate-in {
+  animation: fade-in 0.4s ease-out forwards;
+}
+
+@keyframes slide-in-from-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in-from-bottom {
+  animation: slide-in-from-bottom 0.3s ease-out forwards;
+}
+
+.animate-headline {
+  animation: slide-up-soft 0.5s ease-out 0.1s both;
+}
+
+.animate-card {
+  animation: slide-up-soft 0.45s ease-out 0.15s both;
+}
+
+/* ========== Paper unfold modal (premium) ========== */
+@keyframes paper-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes paper-unfold {
+  from {
+    left: var(--paper-origin-x);
+    top: var(--paper-origin-y);
+    transform: translate(-50%, -50%) scale(0.8) rotateY(-55deg);
+    opacity: 0.92;
+    box-shadow: 0 8px 32px rgba(44, 36, 32, 0.12);
+  }
+  to {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1) rotateY(0deg);
+    opacity: 1;
+    box-shadow: var(--shadow-warm);
+  }
+}
+
+.dark .animate-paper-unfold {
+  --paper-glow: rgba(212, 160, 84, 0.15);
+}
+
+@keyframes paper-unfold-dark {
+  from {
+    left: var(--paper-origin-x);
+    top: var(--paper-origin-y);
+    transform: translate(-50%, -50%) scale(0.8) rotateY(-55deg);
+    opacity: 0.92;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), 0 0 40px var(--paper-glow);
+  }
+  to {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1) rotateY(0deg);
+    opacity: 1;
+    box-shadow: var(--shadow-warm);
+  }
+}
+
+@keyframes paper-content-headline {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes paper-content-form {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-paper-overlay {
+  animation: paper-overlay-in 0.2s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+.animate-paper-unfold {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+  transform: translate(-50%, -50%);
+  animation: paper-unfold 0.55s cubic-bezier(0.33, 0.66, 0.1, 1) forwards;
+}
+
+.dark .animate-paper-unfold {
+  animation: paper-unfold-dark 0.55s cubic-bezier(0.33, 0.66, 0.1, 1) forwards;
+}
+
+.animate-paper-headline {
+  animation: paper-content-headline 0.4s cubic-bezier(0.32, 0.72, 0, 1) 0.35s both;
+}
+
+.animate-paper-form {
+  animation: paper-content-form 0.4s cubic-bezier(0.32, 0.72, 0, 1) 0.45s both;
+}
+
+/* Paper surface: warm panel, inner shadow, rounded, light texture */
+.paper-modal-surface {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-warm), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.paper-modal-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+.dark .paper-modal-surface {
+  box-shadow: var(--shadow-warm), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+/* Mobile: overview panel full width below journal entry */
+@media (max-width: 640px) {
+  .journal-overview-mobile {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+/* Reduced motion: skip unfold, instant fade at center */
+@media (prefers-reduced-motion: reduce) {
+  .animate-paper-overlay {
+    animation: paper-overlay-in 0.15s ease-out forwards;
+  }
+
+  .animate-paper-unfold,
+  .dark .animate-paper-unfold {
+    animation: paper-overlay-in 0.2s ease-out 0.05s both !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
+  .animate-paper-headline,
+  .animate-paper-form {
+    animation: paper-overlay-in 0.2s ease-out 0.08s both !important;
+  }
+}
+
+/* ========== Typography — Yatra One (H1, H2, H3) ========== */
+.text-headline {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  color: var(--headline);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.text-headline-2 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  color: var(--headline-2);
+  letter-spacing: 0.015em;
+}
+
+.text-headline-3 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  color: var(--headline-3);
+  letter-spacing: 0.01em;
+}
+
+.text-body {
+  color: var(--body);
+  line-height: 1.7;
+  font-family: var(--font-sans);
+}
+
+.text-body-soft {
+  color: var(--body-soft);
+  line-height: 1.75;
+  font-family: var(--font-sans);
+}
+
+/* ========== Cards ========== */
+.card-warm {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-warm);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.paper {
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dark .paper:focus-within,
+.dark .input-warm:focus {
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* ========== Buttons ========== */
+.btn-primary {
+  background: var(--accent);
+  color: var(--btn-text);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  border-radius: var(--radius);
+  border: none;
+  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  box-shadow: 0 4px 20px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+.dark .btn-primary:hover:not(:disabled) {
+  box-shadow: 0 4px 24px var(--accent-glow);
+  transform: translateY(-1px) scale(1.02);
+}
+
+.btn-primary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  border-radius: var(--radius);
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--btn-text);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ========== Inputs ========== */
+.input-warm {
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  color: var(--headline);
+  border-radius: var(--radius);
+  font-family: var(--font-sans);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-warm::placeholder {
+  color: var(--muted);
+}
+
+.input-warm:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* ========== Body + Hero Glow ========== */
+body {
+  background: var(--bg);
+  background-image: var(--hero-glow);
+  color: var(--body);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+/* ========== Accessibility ========== */
+.sr-only,
+.skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.skip-link:focus {
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+a[href]:not(.no-underline) {
+  text-underline-offset: 0.2em;
+}
+
+a[href]:hover {
+  text-decoration: underline;
+}
+
+/* ========== Calendar: saved entry date ========== */
+.calendar-cell-has-entry {
+  background: var(--calendar-entry-bg) !important;
+  color: var(--calendar-entry-text) !important;
+  border-color: var(--calendar-entry-border) !important;
+  border-width: 1.5px !important;
+  box-shadow: var(--calendar-entry-shadow);
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.dark .calendar-cell-has-entry {
+  box-shadow: var(--calendar-entry-glow);
+}
+
+.calendar-cell-has-entry:hover {
+  filter: brightness(1.12);
+  box-shadow: var(--calendar-entry-shadow), var(--calendar-entry-glow);
+}
+
+/* ========== Tooltip (calendar hover) ========== */
+.calendar-tooltip {
+  background: var(--tooltip-bg);
+  border-radius: 11px;
+  box-shadow: var(--tooltip-shadow);
+  animation: tooltip-in 0.18s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+.dark .calendar-tooltip {
+  border: 1px solid var(--border);
+}
+
+/* ========== Overview panel (modal left column) ========== */
+.overview-panel-transition {
+  transition: width 300ms cubic-bezier(0.32, 0.72, 0, 1), min-width 300ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.dark .overview-toggle:hover {
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+/* ========== Custom scrollbar (modal + overview) ========== */
+.scrollbar-warm {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+.scrollbar-warm::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollbar-warm::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 4px;
+}
+
+.scrollbar-warm::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+  border: 2px solid var(--scrollbar-track);
+}
+
+.scrollbar-warm::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+.scrollbar-warm::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}
+
+/* ========== Journal modal dimmed when Overview is open (Level 2) ========== */
+.journal-modal-dimmed {
+  opacity: 0.8;
+  box-shadow: 0 2px 12px rgba(44, 36, 32, 0.06);
+}
+
+.dark .journal-modal-dimmed {
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* ========== Overview expanded modal — top layer (Level 3) ========== */
+.overview-modal-backdrop {
+  background: rgba(44, 36, 32, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.dark .overview-modal-backdrop {
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.overview-modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 24px 48px rgba(44, 36, 32, 0.12), 0 8px 24px rgba(44, 36, 32, 0.08);
+  animation: overview-modal-in 0.25s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+.dark .overview-modal-content {
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.overview-modal-content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+@keyframes overview-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Overview modal exit — fade, scale down, slight downward motion, then unmount */
+.overview-modal-content-exit {
+  animation: overview-modal-exit 220ms ease-in forwards;
+}
+
+.overview-modal-backdrop-exit {
+  animation: overview-backdrop-exit 220ms ease-in forwards;
+}
+
+@keyframes overview-modal-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+}
+
+@keyframes overview-backdrop-exit {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overview-modal-content-exit {
+    animation: overview-modal-exit-reduced 150ms ease-in forwards;
+  }
+
+  .overview-modal-backdrop-exit {
+    animation: overview-backdrop-exit 150ms ease-in forwards;
+  }
+}
+
+@keyframes overview-modal-exit-reduced {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Overview modal section labels and spacing */
+.overview-modal-section {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+}
+
+.overview-modal-section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.overview-section-label {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Overview skeleton (shimmer) while AI is processing */
+.overview-skeleton-line {
+  background: var(--border);
+}
+
+.overview-skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--border) 0%,
+    var(--bg-paper) 45%,
+    var(--border) 55%,
+    var(--border) 100%
+  );
+  background-size: 200% 100%;
+  animation: overview-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes overview-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.overview-content-visible {
+  animation: overview-fade-in 200ms ease-out forwards;
+}
+
+@keyframes overview-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overview-skeleton-shimmer {
+    animation: none;
+    background: var(--border);
+  }
+
+  .overview-content-visible {
+    animation: none;
+  }
+}
+
+/* ========== Toast (save confirmation) ========== */
+.toast-enter {
+  animation: toast-enter 150ms ease-out forwards;
+}
+
+.toast-exit {
+  animation: toast-exit 200ms ease-in forwards;
+}
+
+@keyframes toast-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toast-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast-enter {
+    animation: toast-enter-reduced 120ms ease-out forwards;
+  }
+
+  .toast-exit {
+    animation: toast-exit-reduced 150ms ease-in forwards;
+  }
+}
+
+@keyframes toast-enter-reduced {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes toast-exit-reduced {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .calendar-cell-has-entry {
+    transition: none;
+  }
+
+  .calendar-date-cell:hover {
+    transform: none;
+  }
+
+  .calendar-tooltip {
+    animation: none;
+  }
+
+  .overview-panel-transition {
+    transition: none;
+  }
+
+  .overview-modal-content {
+    animation: none;
+  }
+}

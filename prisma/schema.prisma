@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String         @id @default(uuid())
+  email     String         @unique
+  passwordHash String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  entries   JournalEntry[]
+  templates UserTemplate[]
+}
+
+model UserTemplate {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  name      String
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model JournalEntry {
+  id          String         @id @default(uuid())
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  entryDate   DateTime
+  title       String?
+  rawContent  String
+  arasContent String?
+  mood        String?
+  tags        String?
+  deletedAt   DateTime?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  versions    EntryVersion[]
+
+  @@unique([userId, entryDate])
+  @@index([userId, entryDate])
+  @@index([entryDate])
+  @@index([createdAt])
+  @@index([deletedAt])
+}
+
+model EntryVersion {
+  id               String       @id @default(uuid())
+  entry            JournalEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  entryId          String
+  rawContent       String
+  correctedContent String
+  createdAt        DateTime     @default(now())
+
+  @@index([entryId])
+  @@index([entryId, createdAt])
+}
+
+model Prompt {
+  id        String   @id @default(uuid())
+  text      String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
