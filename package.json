@@ -23,7 +23,7 @@
     "@prisma/adapter-pg": "7.2.0",
     "@prisma/client": "7.2.0",
     "@upstash/redis": "^1.36.2",
-    "bcrypt": "^6.0.0",
+    "bcryptjs": "^2.4.3",
     "diff": "^8.0.3",
     "jspdf": "^4.2.0",
     "next": "16.1.6",
@@ -38,7 +38,7 @@
   "devDependencies": {
     "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4",
-    "@types/bcrypt": "^6.0.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

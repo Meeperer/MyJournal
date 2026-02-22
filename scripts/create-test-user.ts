@@ -8,7 +8,7 @@
  * Override with TEST_USER_EMAIL and TEST_USER_PASSWORD env vars.
  */
 import "dotenv/config";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { prisma } from "../src/lib/prisma";
 
 const TEST_EMAIL = process.env.TEST_USER_EMAIL ?? "test@example.com";

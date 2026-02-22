@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { logger } from "@/lib/logger";
 import { checkRateLimit, RATE_LIMIT_ERROR } from "@/lib/rate-limit";
@@ -58,9 +58,13 @@ export async function POST(request: Request) {
 
     return jsonOk({ ok: true }, { status: 201 });
   } catch (error) {
+    const err = error instanceof Error ? error : new Error(String(error));
     logger.error("Register error", {
       requestId,
-      error: error instanceof Error ? error.message : String(error),
+      error: err.message,
+      ...(process.env.NODE_ENV === "production" && err.stack
+        ? { stack: err.stack }
+        : {}),
     });
     return jsonError("Something went wrong while creating the account.", 500);
   }

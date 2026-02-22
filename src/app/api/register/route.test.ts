@@ -10,7 +10,7 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-vi.mock("bcrypt", () => ({
+vi.mock("bcryptjs", () => ({
   default: {
     hash: vi.fn((password: string) => Promise.resolve(`hashed:${password}`)),
   },
@@ -23,7 +23,7 @@ vi.mock("@/lib/rate-limit", () => ({
 
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 describe("POST /api/register", () => {
   beforeEach(() => {
